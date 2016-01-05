@@ -1,11 +1,9 @@
 package com.paulseph.staci.stepdefinitions;
 
-import com.paulseph.staci.driver.Driver;
 import com.paulseph.staci.pageobjectmodels.EvernoteLoginPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 
 import static org.junit.Assert.assertTrue;
 
@@ -15,17 +13,16 @@ public class EvernoteSteps {
 
     @Given("^I open the Evernote login page$")
     public void openEvernoteLoginPageStep() {
-        evernoteLoginPage.openLoginPage();
-//        Driver.getWebDriver().get("https://www.evernote.com/Login.action?targetUrl=%2FHome.action");
+        this.evernoteLoginPage.openLoginPage();
     }
 
-    @Given ("I login with username '' and password ''$")
-    public void evernoteGiven(){
-        System.out.println("Given reached.");
+    @Given ("I login with username '(.*)' and password '(.*)'$")
+    public void loginWithUsernameAndPassword(String username, String password){
+        this.evernoteLoginPage.signIn(username, password);
     }
 
-    @Then("^I am succesfully logged in$")
-    public void evernoteThen(){
+    @Then("^I login successfully$")
+    public void loginSuccessful(){
         System.out.println("Then reached.");
         assertTrue("Should have been true.", true);
     }

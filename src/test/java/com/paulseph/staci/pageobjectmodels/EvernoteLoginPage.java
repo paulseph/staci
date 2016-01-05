@@ -13,15 +13,21 @@ public class EvernoteLoginPage {
         this.driver.get(EVERNOTE_LOGIN_URL);
     }
 
-    public boolean isGoogleSearchTextBarDisplayed() {
-        return driver.findElement(By.id("lst-ib")).isDisplayed();
+    public void inputUsername(String username) {
+        this.driver.findElement(By.id("username")).sendKeys(username);
     }
 
-    public boolean isGoogleSearchButtonDisplayed() {
-        return driver.findElement(By.name("btnK")).isDisplayed();
+    public void inputPassword(String password) {
+        this.driver.findElement(By.id("password")).sendKeys(password);
     }
 
-    public boolean isGoogleSearchImFeelingLuckyButtonDisplayed() {
-        return driver.findElement(By.name("btnI")).isDisplayed();
+    public void pressSignInButton() {
+        this.driver.findElement(By.id("login")).click();
+    }
+
+    public void signIn(String username, String password) {
+        this.inputUsername(username);
+        this.inputPassword(password);
+        this.pressSignInButton();
     }
 }
