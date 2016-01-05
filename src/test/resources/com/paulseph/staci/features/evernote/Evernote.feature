@@ -11,7 +11,7 @@ Feature: Evernote Test
   Scenario: Evernote Login With No Credentials
     Given I open the Evernote login page
     And I login with username '' and password ''
-    Then I login successfully
+    Then the required field login error message is shown
 
   @q1c
   Scenario: Evernote Login With Incorrect Credentials
