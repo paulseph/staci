@@ -1,4 +1,4 @@
-package com.paulseph.staci;
+package com.paulseph.staci.runner;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
