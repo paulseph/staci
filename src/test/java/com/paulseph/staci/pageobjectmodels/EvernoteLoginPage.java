@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 public class EvernoteLoginPage {
     private static String EVERNOTE_LOGIN_URL = "https://www.evernote.com/Login.action?targetUrl=%2FHome.action";
     private static String REQUIRED_FIELD_ERROR_MESSAGE = "This is a required field.";
+    private static String INCORRECT_USERNAME_OR_PASSWORD_ERROR_MESSAGE = "Incorrect username and/or password.";
 
 
     private WebDriver driver = Driver.getWebDriver();
@@ -51,4 +52,9 @@ public class EvernoteLoginPage {
     public boolean requiredFieldLoginErrorMessageIsShown(){
         return this.loginErrorMessageIsShown(EvernoteLoginPage.REQUIRED_FIELD_ERROR_MESSAGE);
     }
+
+    public boolean incorrectUsernameOrPasswordLoginErrorMessageIsShown(){
+        return this.loginErrorMessageIsShown(EvernoteLoginPage.INCORRECT_USERNAME_OR_PASSWORD_ERROR_MESSAGE);
+    }
+
 }

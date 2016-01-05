@@ -16,5 +16,5 @@ Feature: Evernote Test
   @e1c
   Scenario: Evernote Login With Incorrect Credentials
     Given I open the Evernote login page
-    And I login with username 'baduser' and password 'badpassword'
-    Then I login successfully
+    And I login with username 'foobar' and password 'badpassword'
+    Then the incorrect username or password login error message is shown

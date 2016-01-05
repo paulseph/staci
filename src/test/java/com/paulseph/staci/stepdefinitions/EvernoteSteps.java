@@ -2,6 +2,7 @@ package com.paulseph.staci.stepdefinitions;
 
 import com.paulseph.staci.pageobjectmodels.EvernoteLoginPage;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 
@@ -17,6 +18,7 @@ public class EvernoteSteps {
         // Open login page and ensure error messages are not shown.
         this.evernoteLoginPage.openLoginPage();
         assertFalse(this.evernoteLoginPage.requiredFieldLoginErrorMessageIsShown());
+        assertFalse(this.evernoteLoginPage.incorrectUsernameOrPasswordLoginErrorMessageIsShown());
     }
 
     @Given ("I login with username '(.*)' and password '(.*)'$")
@@ -34,4 +36,8 @@ public class EvernoteSteps {
         assertTrue(this.evernoteLoginPage.requiredFieldLoginErrorMessageIsShown());
     }
 
+    @Then("^the incorrect username or password login error message is shown$")
+    public void theIncorrectUsernameOrPasswordLoginErrorMessageIsShown()  {
+        assertTrue(this.evernoteLoginPage.incorrectUsernameOrPasswordLoginErrorMessageIsShown());
+    }
 }
