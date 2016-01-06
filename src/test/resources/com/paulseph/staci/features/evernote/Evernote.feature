@@ -18,3 +18,8 @@ Feature: Evernote Test
     Given I open the Evernote login page
     And I login with username 'foobar' and password 'badpassword'
     Then the incorrect username or password login error message is shown
+
+  @e2
+   Scenario: Create Note with Title and Body
+    Given I login with valid credentials
+    And I create a note with title 'Test Title' and body 'Test Body'

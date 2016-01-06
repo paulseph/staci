@@ -1,8 +1,9 @@
 package com.paulseph.staci.stepdefinitions;
 
-import com.paulseph.staci.pageobjectmodels.EvernoteLoginPage;
+import com.paulseph.staci.pageobjectmodels.EvernotePage;
 
 import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 
@@ -11,33 +12,43 @@ import static org.junit.Assert.assertTrue;
 
 public class EvernoteSteps {
 
-    private EvernoteLoginPage evernoteLoginPage = new EvernoteLoginPage();
+    private EvernotePage evernotePage = new EvernotePage();
 
     @Given("^I open the Evernote login page$")
     public void openEvernoteLoginPageStep() {
         // Open login page and ensure error messages are not shown.
-        this.evernoteLoginPage.openLoginPage();
-        assertFalse(this.evernoteLoginPage.requiredFieldLoginErrorMessageIsShown());
-        assertFalse(this.evernoteLoginPage.incorrectUsernameOrPasswordLoginErrorMessageIsShown());
+        this.evernotePage.openLoginPage();
+        assertFalse(this.evernotePage.requiredFieldLoginErrorMessageIsShown());
+        assertFalse(this.evernotePage.incorrectUsernameOrPasswordLoginErrorMessageIsShown());
     }
 
     @Given ("I login with username '(.*)' and password '(.*)'$")
     public void loginWithUsernameAndPassword(String username, String password){
-        this.evernoteLoginPage.login(username, password);
+        this.evernotePage.login(username, password);
     }
 
     @Then("^I login successfully$")
     public void loginSuccessful(){
-        assertTrue(this.evernoteLoginPage.userIsLoggedIn());
+        assertTrue(this.evernotePage.userIsLoggedIn());
     }
 
     @Then("^the required field login error message is shown$")
     public void theRequiredFieldLoginErrorMessageIsShown(){
-        assertTrue(this.evernoteLoginPage.requiredFieldLoginErrorMessageIsShown());
+        assertTrue(this.evernotePage.requiredFieldLoginErrorMessageIsShown());
     }
 
     @Then("^the incorrect username or password login error message is shown$")
     public void theIncorrectUsernameOrPasswordLoginErrorMessageIsShown()  {
-        assertTrue(this.evernoteLoginPage.incorrectUsernameOrPasswordLoginErrorMessageIsShown());
+        assertTrue(this.evernotePage.incorrectUsernameOrPasswordLoginErrorMessageIsShown());
+    }
+
+    @Given("^I login with valid credentials$")
+    public void iLoginWithValidCredentials() throws Throwable {
+        this.evernotePage.loginWithValidCredentials();
+    }
+
+    @And("^I create a note with title '(.*)' and body '(.*)'$")
+    public void iCreateANoteWithTitleAndBody(String title, String body) throws Throwable {
+        this.evernotePage.createANoteWithTitleAndBody(title, body);
     }
 }
