@@ -19,7 +19,9 @@ Feature: Evernote Test
     And I login with username 'foobar' and password 'badpassword'
     Then the incorrect username or password login error message is shown
 
-  @e2
+  @e2a
    Scenario: Create Note with Title and Body
     Given I login with valid credentials
-    And I create a note with title 'Test Title' and body 'Test Body'
+    And I create a note with title 'Evernote 2 a' and body 'Test Body'
+    Then a note with title 'Evernote 2 a' is displayed in the Notes list
+

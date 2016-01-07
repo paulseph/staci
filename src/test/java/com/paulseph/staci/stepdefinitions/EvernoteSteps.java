@@ -51,4 +51,9 @@ public class EvernoteSteps {
     public void iCreateANoteWithTitleAndBody(String title, String body) throws Throwable {
         this.evernotePage.createANoteWithTitleAndBody(title, body);
     }
+
+    @Then("^a note with title '(.*)' is displayed in the Notes list$")
+    public void aNoteWithTitleIsDisplayedInTheNotesList(String title) {
+        assertTrue(this.evernotePage.aNoteWithTitleIsDisplayedInTheNotesList(title));
+    }
 }
