@@ -22,6 +22,13 @@ Feature: Evernote Tests
   @e2 @e2a
    Scenario: Create Note with Title and Body
     Given I login with valid credentials
-    When I create a note with title 'Evernote 2 ax' and body 'Test Body'
-    Then a note with title 'Evernote 2 ax' is displayed in the Notes list
+    When I create a note with title 'Evernote 2 a' and body 'Test Body'
+    Then a note with title 'Evernote 2 a' is displayed in the Notes list
 
+  @e2 @e2b
+  Scenario: Create Note with Title and Body
+    Given I login with valid credentials
+    When I create a note with title 'Evernote 2 b' and body 'Test Body'
+    And I logout
+    And I login with valid credentials
+    Then a note with title 'Evernote 2 b' is displayed in the Notes list

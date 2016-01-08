@@ -1,13 +1,11 @@
 package com.paulseph.staci.pageobjectmodels;
 
-import com.google.common.base.Predicate;
 import com.paulseph.staci.driver.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -72,10 +70,6 @@ public class EvernotePage {
         this.login(EvernotePage.VALID_USERNAME, EvernotePage.VALID_PASSWORD);
     }
 
-
-
-    // From below onwards not confirmed
-
     private void clickWebElementWithJavascript(WebElement webElement){
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) this.driver;
         javascriptExecutor.executeScript("arguments[0].click();", webElement);
@@ -129,11 +123,11 @@ public class EvernotePage {
         this.clickWebElementWithJavascript(noteDoneButtonWebElement);
     }
 
-    private void ensurePageIsLoaded() {
+    private void waitForPageToLoad(int seconds) {
         // A primitive way to ensure that all dynamic content has loaded by simply adding a wait.
         // This should ideally be replaced with better logic.
         try {
-            Thread.sleep(1000);
+            Thread.sleep(seconds * 1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -141,9 +135,8 @@ public class EvernotePage {
 
     public void deleteAllNotes() {
         this.clickNotesButton();
-        this.ensurePageIsLoaded();
+        this.waitForPageToLoad(1);
         while (this.driver.findElements(By.cssSelector(".qa-deleteButton")).size() > 0) {
-            System.out.println("Remaining notes: " + this.driver.findElements(By.cssSelector(".qa-deleteButton")).size());
             WebElement noteDeleteButtonWebElement = this.driver.findElement(By.cssSelector(".qa-deleteButton"));
 
             Actions action = new Actions(Driver.getWebDriver());
@@ -152,7 +145,7 @@ public class EvernotePage {
             WebElement confirmButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-ConfirmationDialog-confirm"));
             confirmButtonWebElement.click();
             this.clickNotesButton();
-            this.ensurePageIsLoaded();
+            this.waitForPageToLoad(1);
         }
     }
 
@@ -172,6 +165,18 @@ public class EvernotePage {
                         "//div[contains(@class, 'focus-NotesView-Note-noteTitle') and text() = '"
                                 + title
                                 + "']")).size() > 0;
+    }
+
+    public void logout() {
+        this.waitForPageToLoad(4);
+
+        WebElement accountButtonWebElement = this.driver.findElement(By.cssSelector(".GOSDSN-CJP"));
+        this.waitForElementToBeClickableAndClick(accountButtonWebElement);
+
+        WebElement logoutButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-AccountMenu-logout > div:nth-child(2) > div:nth-child(2)"));
+        Actions action = new Actions(Driver.getWebDriver());
+        action.click(logoutButtonWebElement).build().perform();
+
     }
 
 }

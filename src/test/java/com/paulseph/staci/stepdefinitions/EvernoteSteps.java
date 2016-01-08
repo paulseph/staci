@@ -2,6 +2,8 @@ package com.paulseph.staci.stepdefinitions;
 
 import com.paulseph.staci.pageobjectmodels.EvernotePage;
 
+import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -57,4 +59,8 @@ public class EvernoteSteps {
         this.evernotePage.deleteAllNotes();
     }
 
+    @And("^I logout$")
+    public void iLogout() throws Throwable {
+        this.evernotePage.logout();
+    }
 }
