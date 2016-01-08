@@ -2,8 +2,6 @@ package com.paulseph.staci.stepdefinitions;
 
 import com.paulseph.staci.pageobjectmodels.EvernotePage;
 
-import cucumber.api.PendingException;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -56,5 +54,7 @@ public class EvernoteSteps {
     @Then("^a note with title '(.*)' is displayed in the Notes list$")
     public void aNoteWithTitleIsDisplayedInTheNotesList(String title) {
         assertTrue(this.evernotePage.aNoteWithTitleIsDisplayedInTheNotesList(title));
+        this.evernotePage.deleteAllNotes();
     }
+
 }

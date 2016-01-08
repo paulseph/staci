@@ -1,9 +1,12 @@
 package com.paulseph.staci.helper;
 
+import com.paulseph.staci.pageobjectmodels.EvernotePage;
+import com.paulseph.staci.stepdefinitions.EvernoteSteps;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import com.paulseph.staci.driver.Driver;
+import cucumber.api.java.gl.E;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -46,6 +49,8 @@ public class CucumberBeforeAfter {
             scenario.write("Time of failure: " + dateFormat.format(Calendar.getInstance().getTime()));
             DriverScreenShotHelper.takeScreenShot(scenario);
         }
+
+//        EvernoteSteps.deleteAllNotesIfLoggedIn();
 
         if (Driver.getWebDriver() != null) {
             Driver.getWebDriver().quit();

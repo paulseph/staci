@@ -129,45 +129,40 @@ public class EvernotePage {
         this.clickWebElementWithJavascript(noteDoneButtonWebElement);
     }
 
+    private void ensurePageIsLoaded() {
+        // A primitive way to ensure that all dynamic content has loaded by simply adding a wait.
+        // This should ideally be replaced with better logic.
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-    public void createANoteWithTitleAndBody(String title, String body) {
-//        this.clickNotesButton();
-//        this.clickNewNoteButton();
-//        this.writeNoteTitle(title);
-//        this.writeNoteBody(body);
-//        this.clickNoteDoneButton();
-//        this.waitForElementToBeClickable(this.getNewNoteButtonWebElement());
-
-        while(this.driver.findElements(By.cssSelector(".qa-deleteButton")).size() > 0) {
+    public void deleteAllNotes() {
+        this.clickNotesButton();
+        this.ensurePageIsLoaded();
+        while (this.driver.findElements(By.cssSelector(".qa-deleteButton")).size() > 0) {
+            System.out.println("Remaining notes: " + this.driver.findElements(By.cssSelector(".qa-deleteButton")).size());
             WebElement noteDeleteButtonWebElement = this.driver.findElement(By.cssSelector(".qa-deleteButton"));
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             Actions action = new Actions(Driver.getWebDriver());
-            action.moveToElement(noteDeleteButtonWebElement).build().perform();
             action.click(noteDeleteButtonWebElement).build().perform();
 
             WebElement confirmButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-ConfirmationDialog-confirm"));
             confirmButtonWebElement.click();
-
             this.clickNotesButton();
-
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            this.ensurePageIsLoaded();
         }
+    }
 
-//        try {
-//            Thread.sleep(3000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+
+    public void createANoteWithTitleAndBody(String title, String body) {
+        this.clickNotesButton();
+        this.clickNewNoteButton();
+        this.writeNoteTitle(title);
+        this.writeNoteBody(body);
+        this.clickNoteDoneButton();
     }
 
     public boolean aNoteWithTitleIsDisplayedInTheNotesList(String title) {
