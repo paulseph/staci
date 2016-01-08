@@ -44,6 +44,11 @@
             <version>2.48.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>3.3.0</version>
+        </dependency>
     </dependencies>
 
     <build>

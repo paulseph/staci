@@ -6,6 +6,7 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -22,7 +23,7 @@ public class EvernoteSteps {
         assertFalse(this.evernotePage.incorrectUsernameOrPasswordLoginErrorMessageIsShown());
     }
 
-    @Given ("I login with username '(.*)' and password '(.*)'$")
+    @When("I login with username '(.*)' and password '(.*)'$")
     public void loginWithUsernameAndPassword(String username, String password){
         this.evernotePage.login(username, password);
     }
@@ -47,7 +48,7 @@ public class EvernoteSteps {
         this.evernotePage.loginWithValidCredentials();
     }
 
-    @And("^I create a note with title '(.*)' and body '(.*)'$")
+    @When("^I create a note with title '(.*)' and body '(.*)'$")
     public void iCreateANoteWithTitleAndBody(String title, String body) throws Throwable {
         this.evernotePage.createANoteWithTitleAndBody(title, body);
     }

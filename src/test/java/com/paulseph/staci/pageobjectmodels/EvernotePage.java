@@ -1,17 +1,15 @@
 package com.paulseph.staci.pageobjectmodels;
 
+import com.google.common.base.Predicate;
 import com.paulseph.staci.driver.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ThreadGuard;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.Date;
-import java.util.List;
 
 public class EvernotePage {
     private static String EVERNOTE_LOGIN_URL = "https://www.evernote.com/Login.action?targetUrl=%2FHome.action";
@@ -44,7 +42,7 @@ public class EvernotePage {
         this.driver.findElement(By.id("login")).click();
     }
 
-    public void login(String username, String password) {
+    public void login(String username, String password)  {
         this.inputUsername(username);
         this.inputPassword(password);
         this.pressSignInButton();
@@ -83,14 +81,34 @@ public class EvernotePage {
         javascriptExecutor.executeScript("arguments[0].click();", webElement);
     }
 
-    private void clickNewNote() {
-        WebElement newNoteWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-Sidebar-newNoteButton"));
+    private void waitForElementToBeClickable(WebElement webElement) {
+        WebDriverWait wait = new WebDriverWait(this.driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(webElement));
+    }
+
+    private void waitForElementToBeClickableAndClick(WebElement webElement) {
+        this.waitForElementToBeClickable(webElement);
+        webElement.click();
+    }
+
+    private WebElement getNewNoteButtonWebElement() {
+        return this.driver.findElement(By.cssSelector("#gwt-debug-Sidebar-newNoteButton"));
+    }
+
+    private void clickNewNoteButton() {
+        WebElement newNoteButtonWebElement = this.getNewNoteButtonWebElement();
+        this.waitForElementToBeClickableAndClick(newNoteButtonWebElement);
+    }
+
+
+    private void clickNotesButton() {
+        WebElement newNoteWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-Sidebar-notesButton-container > div:nth-child(1) > div:nth-child(1) > img:nth-child(2)"));
         this.clickWebElementWithJavascript(newNoteWebElement);
     }
 
-    private void clickNotes() {
-        WebElement newNoteWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-Sidebar-notesButton-container > div:nth-child(1) > div:nth-child(1) > img:nth-child(2)"));
-        this.clickWebElementWithJavascript(newNoteWebElement);
+
+    private WebElement getNotesHeaderTitleWebElement() {
+        return this.driver.findElement(By.cssSelector("#gwt-debug-NotesHeader-title"));
     }
 
 
@@ -111,17 +129,49 @@ public class EvernotePage {
         this.clickWebElementWithJavascript(noteDoneButtonWebElement);
     }
 
+
     public void createANoteWithTitleAndBody(String title, String body) {
-        this.clickNotes();
-        this.clickNewNote();
-        this.writeNoteTitle(title);
-        this.writeNoteBody(body);
-        this.clickNoteDoneButton();
-        this.clickNotes();
+//        this.clickNotesButton();
+//        this.clickNewNoteButton();
+//        this.writeNoteTitle(title);
+//        this.writeNoteBody(body);
+//        this.clickNoteDoneButton();
+//        this.waitForElementToBeClickable(this.getNewNoteButtonWebElement());
+
+        while(this.driver.findElements(By.cssSelector(".qa-deleteButton")).size() > 0) {
+            WebElement noteDeleteButtonWebElement = this.driver.findElement(By.cssSelector(".qa-deleteButton"));
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            Actions action = new Actions(Driver.getWebDriver());
+            action.moveToElement(noteDeleteButtonWebElement).build().perform();
+            action.click(noteDeleteButtonWebElement).build().perform();
+
+            WebElement confirmButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-ConfirmationDialog-confirm"));
+            confirmButtonWebElement.click();
+
+            this.clickNotesButton();
+
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+        }
+
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public boolean aNoteWithTitleIsDisplayedInTheNotesList(String title) {
-        this.clickNotes();
+        this.clickNotesButton();
         return this.driver.findElements(
                 By.xpath(
                         "//div[contains(@class, 'focus-NotesView-Note-noteTitle') and text() = '"
