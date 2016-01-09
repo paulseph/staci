@@ -98,6 +98,7 @@ public class EvernotePage {
     private void clickNotesButton() {
         WebElement notesButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-Sidebar-notesButton-container > div:nth-child(1) > div:nth-child(1) > img:nth-child(2)"));
         this.clickWebElementWithJavascript(notesButtonWebElement);
+        this.waitForPageToLoad(1);
     }
 
 
@@ -112,10 +113,10 @@ public class EvernotePage {
     }
 
     private void writeNoteBody(String body) {
-        this.driver.switchTo().frame("entinymce_170_ifr");
+        this.switchToBodyFrame();
         WebElement we = this.driver.switchTo().activeElement();
         we.sendKeys(body);
-        this.driver.switchTo().defaultContent();
+        this.switchToDefaultContent();
     }
 
     private void clickNoteDoneButton() {
@@ -204,4 +205,68 @@ public class EvernotePage {
                                 + "']")).size() > 0;
     }
 
+    private void writeNoteTable(int rows, int columns) {
+        this.switchToBodyFrame();
+        WebElement bodyWebElement = this.driver.switchTo().activeElement();
+        bodyWebElement.click();
+        this.switchToDefaultContent();
+
+        WebElement tableButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-FormattingBar-tableButton"));
+        tableButtonWebElement.click();
+
+        WebElement tableChoiceWebElement = this.driver.findElement(
+                By.cssSelector("div.GOSDSN-CDN:nth-child("
+                    + rows
+                    + ") > div:nth-child("
+                    + columns
+                    + ")"));
+        tableChoiceWebElement.click();
+    }
+
+    public void createANoteWithTitleAndATable(String title, int rows, int columns) {
+        this.clickNotesButton();
+        this.clickNewNoteButton();
+        this.writeNoteTitle(title);
+        this.writeNoteTable(rows, columns);
+//        this.writeNoteBody(rows + "x" + columns); // Could be used to cross check bottom right corner
+        this.clickNoteDoneButton();
+    }
+
+    public void clickOnNoteWithTitle(String title) {
+        this.clickNotesButton();
+        WebElement noteTitleWebElement = this.driver.findElement(
+                By.xpath(
+                        "//div[contains(@class, 'focus-NotesView-Note-noteTitle') and text() = '"
+                                + title
+                                + "']"));
+
+        this.clickWebElementWithActions(noteTitleWebElement);
+    }
+
+    // Ensure note with given title exists and has a table with the indicated rows and columns
+    public boolean aNoteWithTitleAndATableWithRowsAndColumnsIsCreated(String title, int rows, int columns) {
+        boolean aNoteWithTitleAndATableWithRowsAndColumnsIsCreated = false;
+
+        if (this.aNoteWithTitleIsDisplayedInTheNotesList(title)) {
+            this.clickOnNoteWithTitle(title);
+
+            aNoteWithTitleAndATableWithRowsAndColumnsIsCreated = this.driver.findElements(
+                    By.cssSelector(
+                            "table:nth-child(1) > tbody:nth-child(1) > tr:nth-child("
+                                    + rows
+                                    + ") > td:nth-child("
+                                    + columns
+                                    + ")")).size() > 0;
+        }
+
+        return aNoteWithTitleAndATableWithRowsAndColumnsIsCreated;
+    }
+
+    private void switchToDefaultContent() {
+        this.driver.switchTo().defaultContent();
+    }
+
+    private void switchToBodyFrame() {
+        this.driver.switchTo().frame("entinymce_170_ifr");
+    }
 }

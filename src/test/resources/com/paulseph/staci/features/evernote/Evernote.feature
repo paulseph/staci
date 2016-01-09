@@ -39,3 +39,9 @@ Feature: Evernote Tests
     When I create a note with title 'Evernote 2 c' and body 'Test Body'
     And I create a shortcut to the first note
     Then a shortcut with title 'Evernote 2 c' is displayed in the Shortcut list
+
+  @e2 @e2d
+  Scenario: Create note with a table
+    Given I login with valid credentials
+    When I create a note with title 'Evernote 2 d' and a table with 3 rows and 3 columns
+    Then a note with title 'Evernote 2 d' and a table with 3 rows and 3 columns is created

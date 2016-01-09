@@ -74,4 +74,16 @@ public class EvernoteSteps {
         assertTrue(this.evernotePage.aShortcutWithTitleIsDisplayedInTheShortcutList(title));
         this.evernotePage.deleteAllNotes();
     }
+
+    @When("^I create a note with title '(.*)' and a table with (\\d+) rows and (\\d+) columns$")
+    public void iCreateANoteWithTitleAndATable(String title, int rows, int columns) {
+        this.evernotePage.createANoteWithTitleAndATable(title, rows, columns);
+    }
+
+    @Then("^a note with title '(.*)' and a table with (\\d+) rows and (\\d+) columns is created$")
+    public void aNoteWithTitleAndATableWithRowsAndColumnsIsCreated(String title, int rows, int columns) throws Throwable {
+        assertTrue(this.evernotePage.aNoteWithTitleAndATableWithRowsAndColumnsIsCreated(title, rows, columns));
+
+        this.evernotePage.deleteAllNotes();
+    }
 }
