@@ -75,13 +75,13 @@ public class EvernotePage {
         javascriptExecutor.executeScript("arguments[0].click();", webElement);
     }
 
-    private void waitForElementToBeClickable(WebElement webElement) {
+    private void waitForWebElementToBeClickable(WebElement webElement) {
         WebDriverWait wait = new WebDriverWait(this.driver, 10);
         wait.until(ExpectedConditions.elementToBeClickable(webElement));
     }
 
-    private void waitForElementToBeClickableAndClick(WebElement webElement) {
-        this.waitForElementToBeClickable(webElement);
+    private void waitForWebElementToBeClickableAndClick(WebElement webElement) {
+        this.waitForWebElementToBeClickable(webElement);
         webElement.click();
     }
 
@@ -91,13 +91,13 @@ public class EvernotePage {
 
     private void clickNewNoteButton() {
         WebElement newNoteButtonWebElement = this.getNewNoteButtonWebElement();
-        this.waitForElementToBeClickableAndClick(newNoteButtonWebElement);
+        this.waitForWebElementToBeClickableAndClick(newNoteButtonWebElement);
     }
 
 
     private void clickNotesButton() {
-        WebElement newNoteWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-Sidebar-notesButton-container > div:nth-child(1) > div:nth-child(1) > img:nth-child(2)"));
-        this.clickWebElementWithJavascript(newNoteWebElement);
+        WebElement notesButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-Sidebar-notesButton-container > div:nth-child(1) > div:nth-child(1) > img:nth-child(2)"));
+        this.clickWebElementWithJavascript(notesButtonWebElement);
     }
 
 
@@ -139,14 +139,19 @@ public class EvernotePage {
         while (this.driver.findElements(By.cssSelector(".qa-deleteButton")).size() > 0) {
             WebElement noteDeleteButtonWebElement = this.driver.findElement(By.cssSelector(".qa-deleteButton"));
 
-            Actions action = new Actions(Driver.getWebDriver());
-            action.click(noteDeleteButtonWebElement).build().perform();
+            this.clickWebElementWithActions(noteDeleteButtonWebElement);
 
             WebElement confirmButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-ConfirmationDialog-confirm"));
             confirmButtonWebElement.click();
+
             this.clickNotesButton();
             this.waitForPageToLoad(1);
         }
+    }
+
+    private void clickWebElementWithActions(WebElement noteDeleteButtonWebElement) {
+        Actions action = new Actions(this.driver);
+        action.click(noteDeleteButtonWebElement).build().perform();
     }
 
 
@@ -171,12 +176,32 @@ public class EvernotePage {
         this.waitForPageToLoad(4);
 
         WebElement accountButtonWebElement = this.driver.findElement(By.cssSelector(".GOSDSN-CJP"));
-        this.waitForElementToBeClickableAndClick(accountButtonWebElement);
+        this.waitForWebElementToBeClickableAndClick(accountButtonWebElement);
 
         WebElement logoutButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-AccountMenu-logout > div:nth-child(2) > div:nth-child(2)"));
-        Actions action = new Actions(Driver.getWebDriver());
-        action.click(logoutButtonWebElement).build().perform();
+        this.clickWebElementWithActions(logoutButtonWebElement);
 
+    }
+
+    // Creates a short cut to the first note displayed
+    public void createShortcutToFirstNote() {
+        this.clickNotesButton();
+        WebElement shortcutButtonWebElement = this.driver.findElement(By.cssSelector(".qa-shortcutButton"));
+        this.clickWebElementWithActions(shortcutButtonWebElement);
+    }
+
+    private void clickShorcutsButton() {
+        WebElement shortcutsButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-Sidebar-shortcutsButton-container > div:nth-child(1) > div:nth-child(1) > img:nth-child(2)"));
+        this.clickWebElementWithJavascript(shortcutsButtonWebElement);
+    }
+
+    public boolean aShortcutWithTitleIsDisplayedInTheShortcutList(String title) {
+        this.clickShorcutsButton();
+        return this.driver.findElements(
+                By.xpath(
+                        "//div[contains(@class, 'qa-name') and text() = '"
+                                + title
+                                + "']")).size() > 0;
     }
 
 }

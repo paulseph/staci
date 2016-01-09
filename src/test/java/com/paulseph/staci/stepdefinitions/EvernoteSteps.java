@@ -63,4 +63,15 @@ public class EvernoteSteps {
     public void iLogout() throws Throwable {
         this.evernotePage.logout();
     }
+
+    @And("^I create a shortcut to the first note$")
+    public void iCreateAShortcutToTheFirstNote() {
+        this.evernotePage.createShortcutToFirstNote();
+    }
+
+    @Then("^a shortcut with title '(.*)' is displayed in the Shortcut list$")
+    public void aShortcutWithTitleIsDisplayedInTheShortcutList(String title) {
+        assertTrue(this.evernotePage.aShortcutWithTitleIsDisplayedInTheShortcutList(title));
+        this.evernotePage.deleteAllNotes();
+    }
 }
