@@ -89,7 +89,10 @@ public class EvernoteSteps {
 
     @Then("^sorting works well in the Notes list$")
     public void sortingWorksWellInTheNotesList() {
-        assertTrue (this.evernotePage.sortingWorksWellInTheNotesList());
+        assertTrue (this.evernotePage.sortingByDateCreatedOldestFirstWorksWell());
+        assertTrue (this.evernotePage.sortingByDateCreatedNewestFirstWorksWell());
+        assertTrue (this.evernotePage.sortingByTitleAscendingWorksWell());
+        assertTrue (this.evernotePage.sortingByTitleDescendingWorksWell());
 
         this.evernotePage.deleteAllNotes();
     }

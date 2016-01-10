@@ -322,7 +322,6 @@ public class EvernotePage {
             } else {
                 throw new RuntimeException("Note date format longer than 1 hour not supported by test.");
             }
-            System.out.println("<" + noteAgeInSeconds + ">");
 
             noteAgeInSecondsList.add(new Integer(noteAgeInSeconds));
         }
@@ -346,6 +345,20 @@ public class EvernotePage {
         return noteInfoViewCreatedDateWebElement.getText();
     }
 
+
+    private List<Comparable> getNoteTitleList() {
+        List<Comparable> noteTitleList = new ArrayList<>();
+
+        List<WebElement> noteTitleWebElementList = this.driver.findElements(By.cssSelector(".qa-title"));
+
+        for (WebElement noteTitleWebElement : noteTitleWebElementList) {
+            String noteTitleText = noteTitleWebElement.getText().trim();
+
+            noteTitleList.add(noteTitleText);
+        }
+
+        return noteTitleList;
+    }
 
     // Returns true if list provided is sorted ascending
     private static boolean isListSortedAscending(List<Comparable> list) {
@@ -379,7 +392,7 @@ public class EvernotePage {
         return true;
     }
 
-    private boolean sortingByDateCreatedOldestFirstWorksWell() {
+    public boolean sortingByDateCreatedOldestFirstWorksWell() {
         this.clickNotesButton();
         this.clickOptionsButton();
         this.clickSortByDateCreatedOldestFirstOption();
@@ -387,7 +400,7 @@ public class EvernotePage {
         return EvernotePage.isListSortedDescending(noteAgeInSecondsList);
     }
 
-    private boolean sortingByDateCreatedNewestFirstWorksWell() {
+    public boolean sortingByDateCreatedNewestFirstWorksWell() {
         this.clickNotesButton();
         this.clickOptionsButton();
         this.clickSortByDateCreatedNewestFirstOption();
@@ -395,30 +408,21 @@ public class EvernotePage {
         return EvernotePage.isListSortedAscending(noteAgeInSecondsList);
     }
 
-    public boolean sortingWorksWellInTheNotesList() {
-        System.out.println("Created Oldest First");
-        boolean sortingByDateCreatedOldestFirstWorksWell = this.sortingByDateCreatedOldestFirstWorksWell();
-        System.out.println(sortingByDateCreatedOldestFirstWorksWell);
 
-        System.out.println("Created Newest First");
-        boolean sortingByDateCreatedNewestFirstWorksWell = this.sortingByDateCreatedNewestFirstWorksWell();
-        System.out.println(sortingByDateCreatedNewestFirstWorksWell);
-
-
-
-//
-//        this.clickOptionsButton();
-//        this.clickSortByTitleAscendingOption();
-//
-////        this.waitForPageToLoad(10);
-//
-//        this.clickOptionsButton();
-//        this.clickSortByTitleDescendingOption();
-//
-////        this.waitForPageToLoad(10);
-
-        return true;
+    public boolean sortingByTitleAscendingWorksWell() {
+        this.clickNotesButton();
+        this.clickOptionsButton();
+        this.clickSortByTitleAscendingOption();
+        List<Comparable> noteTitleList = this.getNoteTitleList();
+        return EvernotePage.isListSortedAscending(noteTitleList);
     }
 
+    public boolean sortingByTitleDescendingWorksWell() {
+        this.clickNotesButton();
+        this.clickOptionsButton();
+        this.clickSortByTitleDescendingOption();
+        List<Comparable> noteTitleList = this.getNoteTitleList();
+        return EvernotePage.isListSortedDescending(noteTitleList);
+    }
 
 }
