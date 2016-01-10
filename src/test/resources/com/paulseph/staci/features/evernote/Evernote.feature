@@ -83,5 +83,5 @@ Feature: Evernote Tests
     And I move the note with title 'Evernote 4' to the notebook with title 'Notebook Testing'
     Then the note with title 'Evernote 4' and body 'Test Body' exists in the notebook with title 'Notebook Testing'
     And the note with title 'Evernote 4' and body 'Test Body' does not exist in the notebook with title 'First Notebook'
-##    And I delete notebook with title 'Test Notebook'
+    And I delete notebook with title 'Notebook Testing'
 

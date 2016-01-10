@@ -533,21 +533,10 @@ public class EvernotePage {
     }
 
     private void clickNotebookWithTitle(String notebookTitle) {
-//        WebElement notebookWithTitleWebElement
-//                = this.driver.findElement( By.xpath("//*[contains(@class, 'qa-name') and text() = '" + notebookTitle + "']/parent::*"));
-
         WebElement notebookWithTitleWebElement
                 = this.driver.findElement( By.xpath("//*/div[contains(@class,'qa-notebookWidget')]/div/div[contains(@class, 'qa-name') and text() = '" + notebookTitle + "']/parent::*"));
 
-
-
-//        Actions action = new Actions(this.driver);
-//        action.moveToElement(notebookWithTitleWebElement).build().perform();
-//        action.click(notebookWithTitleWebElement).build().perform();
-
         this.clickWebElementWithJavascript(notebookWithTitleWebElement);
-
-//        notebookWithTitleWebElement.click();
 
         this.waitForPageToLoad(1);
     }
@@ -560,7 +549,7 @@ public class EvernotePage {
     public boolean theNoteWithTitleAndBodyExistsInTheNotebookWithTitle(String noteTitle, String noteBody, String notebookTitle) {
         this.openNotebookWithTitle(notebookTitle);
 
-        this.waitForPageToLoad(10);
+//        this.waitForPageToLoad(10);
 
         List<EvernoteNote> evernoteNoteList = this.getNoteList();
 
