@@ -9,6 +9,9 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EvernotePage {
     private static String EVERNOTE_LOGIN_URL = "https://www.evernote.com/Login.action?targetUrl=%2FHome.action";
 
@@ -269,4 +272,153 @@ public class EvernotePage {
     private void switchToBodyFrame() {
         this.driver.switchTo().frame("entinymce_170_ifr");
     }
+
+
+    private void clickOptionsButton() {
+        WebElement optionsButtonWebElement = this.driver.findElement(By.cssSelector(".focus-NotesView-Subheader-OptionsButton"));
+        this.waitForWebElementToBeClickableAndClick(optionsButtonWebElement);
+    }
+
+    private void clickSortByDateCreatedOldestFirstOption() {
+        WebElement sortByDateCreatedOldestFirstOptionWebElement = this.driver.findElement(By.cssSelector("div.SelectorOption:nth-child(1)"));
+        this.waitForWebElementToBeClickableAndClick(sortByDateCreatedOldestFirstOptionWebElement);
+        this.waitForPageToLoad(1);
+    }
+
+    private void clickSortByDateCreatedNewestFirstOption() {
+        WebElement sortByDateCreatedNewestFirstOptionWebElement = this.driver.findElement(By.cssSelector("div.SelectorOption:nth-child(2)"));
+        this.waitForWebElementToBeClickableAndClick(sortByDateCreatedNewestFirstOptionWebElement);
+        this.waitForPageToLoad(1);
+    }
+
+    private void clickSortByTitleAscendingOption() {
+        WebElement sortByTitleAscendingOptionWebElement = this.driver.findElement(By.cssSelector("div.SelectorOption:nth-child(5)"));
+        this.waitForWebElementToBeClickableAndClick(sortByTitleAscendingOptionWebElement);
+        this.waitForPageToLoad(1);
+    }
+
+    private void clickSortByTitleDescendingOption() {
+        WebElement sortByTitleDescendingOptionWebElement = this.driver.findElement(By.cssSelector("div.SelectorOption:nth-child(6)"));
+        this.waitForWebElementToBeClickableAndClick(sortByTitleDescendingOptionWebElement);
+        this.waitForPageToLoad(1);
+    }
+
+    private List<Comparable> getNoteAgeInSecondsList() {
+        List<Comparable> noteAgeInSecondsList = new ArrayList<>();
+
+        List<WebElement> noteDateWebElementList = this.driver.findElements(By.cssSelector(".qa-date"));
+
+        for (WebElement noteDateWebElement : noteDateWebElementList) {
+            String noteDateText = noteDateWebElement.getText().trim();
+
+            int noteAgeInSeconds = 0;
+
+            if ("MOMENTS AGO".equals(noteDateText)) {
+                noteAgeInSeconds = 0;
+            } else if (noteDateText.contains("SECOND AGO") || noteDateText.contains("SECONDS AGO")) {
+                noteAgeInSeconds = Integer.valueOf(noteDateText.substring(0, noteDateText.indexOf(' ')));
+            } else if (noteDateText.contains("MINUTE AGO") || noteDateText.contains("MINUTES AGO")) {
+                noteAgeInSeconds = Integer.valueOf(noteDateText.substring(0, noteDateText.indexOf(' '))) * 60;
+            } else {
+                throw new RuntimeException("Note date format longer than 1 hour not supported by test.");
+            }
+            System.out.println("<" + noteAgeInSeconds + ">");
+
+            noteAgeInSecondsList.add(new Integer(noteAgeInSeconds));
+        }
+
+        return noteAgeInSecondsList;
+    }
+
+    private void clickNoteInfoButton() {
+        WebElement noteInfoButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-NoteAttributes-infoButton"));
+        this.clickWebElementWithActions(noteInfoButtonWebElement);
+    }
+
+    private void clickNoteInfoViewCancelButton() {
+        WebElement noteInfoViewCancelButtonWebElement = this.driver.findElement(By.xpath("//span[text()='Cancel']"));
+        this.clickWebElementWithActions(noteInfoViewCancelButtonWebElement);
+    }
+
+    private String getNoteInfoViewCreatedDate() {
+        WebElement noteInfoViewCreatedDateWebElement = this.driver.findElement(
+                By.cssSelector("#gwt-debug-NoteInfoDialog-createdContainer.GOSDSN-CBEC span.GOSDSN-CCEC.GOSDSN-CBD"));
+        return noteInfoViewCreatedDateWebElement.getText();
+    }
+
+
+    // Returns true if list provided is sorted ascending
+    private static boolean isListSortedAscending(List<Comparable> list) {
+        if(list == null || list.isEmpty())
+            return true;
+
+        if(list.size() == 1)
+            return true;
+
+        for(int i = 1; i < list.size(); i++) {
+            if(list.get(i).compareTo(list.get(i-1)) < 0 )
+                return false;
+        }
+
+        return true;
+    }
+
+    // Returns true if list provided is sorted descending
+    private static boolean isListSortedDescending(List<Comparable> list) {
+        if(list == null || list.isEmpty())
+            return true;
+
+        if(list.size() == 1)
+            return true;
+
+        for(int i = 1; i < list.size(); i++) {
+            if(list.get(i-1).compareTo(list.get(i)) < 0 )
+                return false;
+        }
+
+        return true;
+    }
+
+    private boolean sortingByDateCreatedOldestFirstWorksWell() {
+        this.clickNotesButton();
+        this.clickOptionsButton();
+        this.clickSortByDateCreatedOldestFirstOption();
+        List<Comparable> noteAgeInSecondsList = this.getNoteAgeInSecondsList();
+        return EvernotePage.isListSortedDescending(noteAgeInSecondsList);
+    }
+
+    private boolean sortingByDateCreatedNewestFirstWorksWell() {
+        this.clickNotesButton();
+        this.clickOptionsButton();
+        this.clickSortByDateCreatedNewestFirstOption();
+        List<Comparable> noteAgeInSecondsList = this.getNoteAgeInSecondsList();
+        return EvernotePage.isListSortedAscending(noteAgeInSecondsList);
+    }
+
+    public boolean sortingWorksWellInTheNotesList() {
+        System.out.println("Created Oldest First");
+        boolean sortingByDateCreatedOldestFirstWorksWell = this.sortingByDateCreatedOldestFirstWorksWell();
+        System.out.println(sortingByDateCreatedOldestFirstWorksWell);
+
+        System.out.println("Created Newest First");
+        boolean sortingByDateCreatedNewestFirstWorksWell = this.sortingByDateCreatedNewestFirstWorksWell();
+        System.out.println(sortingByDateCreatedNewestFirstWorksWell);
+
+
+
+//
+//        this.clickOptionsButton();
+//        this.clickSortByTitleAscendingOption();
+//
+////        this.waitForPageToLoad(10);
+//
+//        this.clickOptionsButton();
+//        this.clickSortByTitleDescendingOption();
+//
+////        this.waitForPageToLoad(10);
+
+        return true;
+    }
+
+
 }

@@ -86,4 +86,21 @@ public class EvernoteSteps {
 
         this.evernotePage.deleteAllNotes();
     }
+
+    @Then("^sorting works well in the Notes list$")
+    public void sortingWorksWellInTheNotesList() {
+        assertTrue (this.evernotePage.sortingWorksWellInTheNotesList());
+
+        this.evernotePage.deleteAllNotes();
+    }
+
+
+    @And("^I wait for (\\d+) seconds?$")
+    public void iWaitForSeconds(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
