@@ -367,7 +367,7 @@ public class EvernotePage {
     }
 
     // Returns the list of notes displayed
-    private List<EvernoteNote> getNoteList() {
+    public List<EvernoteNote> getNoteList() {
         List<EvernoteNote> noteList = new ArrayList<>();
 
         List<WebElement> noteWebElementList = this.driver.findElements(By.cssSelector(".focus-NotesView-Note-snippetContent"));
@@ -572,4 +572,36 @@ public class EvernotePage {
         this.clickConfirmationDialogConfirmButton();
 
     }
+
+    private void clickTrashCanButton() {
+        WebElement trashCanButtonWebElement = this.driver.findElement(
+                By.cssSelector(".qa-notebookWidget.qa-trash div div.GOSDSN-CBD.GOSDSN-CGQB"));
+        trashCanButtonWebElement.click();
+        this.waitForPageToLoad(2);
+    }
+
+    public void navigateToTheTrashCan() {
+        this.clickNotebooksButton();
+        this.clickTrashCanButton();
+    }
+
+    public boolean theNoteWithTitleAndBodyIsDisplayed(String noteTitle, String noteBody) {
+        List<EvernoteNote> evernoteNoteList = this.getNoteList();
+
+        return evernoteNoteList.contains(new EvernoteNote(noteTitle, noteBody));
+    }
+
+
+    private void clickEmptyTrashButton() {
+        WebElement emptyTrashButtonWebElement = this.driver.findElement(
+                By.xpath("//*[text()='Empty trash']"));
+        emptyTrashButtonWebElement.click();
+    }
+
+    public void clickTheEmptyTrashButtonAndEmptyTheTrash() {
+        this.clickEmptyTrashButton();
+        this.clickConfirmationDialogConfirmButton();
+        this.waitForPageToLoad(2);
+    }
+
 }

@@ -143,4 +143,29 @@ public class EvernoteSteps {
     public void iDeleteNotebookWithTitle(String notebookTitle) {
         this.evernotePage.deleteNotebookWithTitle(notebookTitle);
     }
+
+    @And("^I delete all notes$")
+    public void iDeleteAllNotes() {
+        this.evernotePage.deleteAllNotes();
+    }
+
+    @And("^I navigate to the trash can$")
+    public void iNavigateToTheTrashCan()  {
+        this.evernotePage.navigateToTheTrashCan();
+    }
+
+    @Then("^the note with title '(.*)' and body '(.*)' is displayed$")
+    public void theNoteWithTitleAndBodyIsDisplayed(String noteTitle, String noteBody) {
+        assertTrue(this.evernotePage.theNoteWithTitleAndBodyIsDisplayed(noteTitle, noteBody));
+    }
+
+    @When("^I click the Empty Trash button and empty the trash$")
+    public void iClickTheEmptyTrashButtonAndEmptyTheTrash() {
+        this.evernotePage.clickTheEmptyTrashButtonAndEmptyTheTrash();
+    }
+
+    @Then("^there are no notes displayed$")
+    public void thereAreNoNotesDisplayed() throws Throwable {
+        assertTrue(this.evernotePage.getNoteList().size() == 0);
+    }
 }

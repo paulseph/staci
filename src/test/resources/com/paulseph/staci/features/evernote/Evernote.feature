@@ -85,3 +85,17 @@ Feature: Evernote Tests
     And the note with title 'Evernote 4' and body 'Test Body' does not exist in the notebook with title 'First Notebook'
     And I delete notebook with title 'Notebook Testing'
 
+  @e5 @e5a
+  Scenario: Create 3 notes, delete them and empty the trash can
+    Given I login with valid credentials
+    When I create a note with title 'Evernote 5 a 1' and body 'Test Body 1'
+    And I create a note with title 'Evernote 5 a 2' and body 'Test Body 2'
+    And I create a note with title 'Evernote 5 a 3' and body 'Test Body 3'
+    And I delete all notes
+    And I navigate to the trash can
+    Then the note with title 'Evernote 5 a 1' and body 'Test Body 1' is displayed
+    And the note with title 'Evernote 5 a 2' and body 'Test Body 2' is displayed
+    And the note with title 'Evernote 5 a 3' and body 'Test Body 3' is displayed
+    When I click the Empty Trash button and empty the trash
+    Then there are no notes displayed
+
