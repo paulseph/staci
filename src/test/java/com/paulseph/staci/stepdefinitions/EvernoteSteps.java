@@ -106,4 +106,16 @@ public class EvernoteSteps {
             e.printStackTrace();
         }
     }
+
+    @When("^I search for '(.*)'$")
+    public void iSearchFor(String searchString) {
+        this.evernotePage.searchFor(searchString);
+    }
+
+    @Then("^a note with title '(.*)' and body '(.*)' is shown$")
+    public void aNoteWithTitleAndBodyIsShown(String title, String body) {
+        assertTrue(this.evernotePage.aNoteWithTitleAndBodyIsShown(title, body));
+
+        this.evernotePage.deleteAllNotes();
+    }
 }

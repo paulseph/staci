@@ -71,6 +71,7 @@ public class EvernotePage {
     public void loginWithValidCredentials(){
         this.openLoginPage();
         this.login(EvernotePage.VALID_USERNAME, EvernotePage.VALID_PASSWORD);
+        this.waitForPageToLoad(1);
     }
 
     private void clickWebElementWithJavascript(WebElement webElement){
@@ -360,6 +361,25 @@ public class EvernotePage {
         return noteTitleList;
     }
 
+    // Returns the list of notes displayed
+    private List<EvernoteNote> getNoteList() {
+        List<EvernoteNote> noteList = new ArrayList<>();
+
+        List<WebElement> noteWebElementList = this.driver.findElements(By.cssSelector(".focus-NotesView-Note-snippetContent"));
+
+        for (WebElement noteWebElement : noteWebElementList) {
+
+            String noteTitle = noteWebElement.findElement(By.cssSelector(".qa-title")).getText();
+            String noteBody = noteWebElement.findElement(By.cssSelector(".qa-snippet")).getText();
+
+            noteList.add(new EvernoteNote(noteTitle, noteBody));
+        }
+
+        return noteList;
+    }
+
+
+
     // Returns true if list provided is sorted ascending
     private static boolean isListSortedAscending(List<Comparable> list) {
         if(list == null || list.isEmpty())
@@ -423,6 +443,32 @@ public class EvernotePage {
         this.clickSortByTitleDescendingOption();
         List<Comparable> noteTitleList = this.getNoteTitleList();
         return EvernotePage.isListSortedDescending(noteTitleList);
+    }
+
+    private void clickSearchButton() {
+        WebElement searchButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-Sidebar-searchButton-container > div:nth-child(1) > div:nth-child(1) > img:nth-child(2)"));
+        this.clickWebElementWithJavascript(searchButtonWebElement);
+    }
+
+    private void inputSearchString(String searchString) {
+        WebElement searchBoxWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-searchViewSearchBox"));
+        searchBoxWebElement.sendKeys(searchString + "\n");
+        this.waitForPageToLoad(2);
+    }
+
+
+    public void searchFor(String searchString) {
+        this.clickSearchButton();
+
+        this.inputSearchString(searchString);
+    }
+
+    public boolean aNoteWithTitleAndBodyIsShown(String title, String body) {
+        List<EvernoteNote> evernoteNoteList = this.getNoteList();
+
+        EvernoteNote evernoteNote = new EvernoteNote(title, body);
+
+        return evernoteNoteList.contains(evernoteNote);
     }
 
 }

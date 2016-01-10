@@ -56,3 +56,21 @@ Feature: Evernote Tests
     And I create a note with title 'Evernote 2 e 2' and body 'Test Body 2'
     And I wait for 1 second
     Then sorting works well in the Notes list
+
+  @e3 @e3a
+  Scenario: Create 3 notes and search for 1 note with the note title
+    Given I login with valid credentials
+    When I create a note with title 'Evernote 3 a 1' and body 'Test Body 1'
+    And I create a note with title 'Evernote 3 a 2' and body 'Test Body 2'
+    And I create a note with title 'Evernote 3 a 3' and body 'Test Body 3'
+    When I search for 'Evernote 3 a 2'
+    Then a note with title 'Evernote 3 a 2' and body 'Test Body 2' is shown
+
+  @e3 @e3b
+  Scenario: Create 3 notes and search for 1 note with part of the body text
+    Given I login with valid credentials
+    When I create a note with title 'Evernote 3 b 1' and body 'Test Body 1'
+    And I create a note with title 'Evernote 3 b 2' and body 'Test Body 2'
+    And I create a note with title 'Evernote 3 b 3' and body 'Test Body 3'
+    When I search for 'Body 2'
+    Then a note with title 'Evernote 3 b 2' and body 'Test Body 2' is shown
