@@ -604,4 +604,17 @@ public class EvernotePage {
         this.waitForPageToLoad(2);
     }
 
+    // Restore note with given title from trash
+    public void restoreTheNoteWithTitle(String noteTitle) {
+        WebElement noteRestoreButtonWebElement = this.driver.findElement(
+                By.xpath("//div[contains(@class, 'focus-NotesView-Note-innerSnippetContainer')]/div/div[contains(@class, 'qa-title') and text() = '"
+                + noteTitle
+                + "']/parent::*/following-sibling::*/div/button[text() = 'Restore']"
+                ));
+        noteRestoreButtonWebElement.click();
+    }
+
+    public void navigateToTheNotesList() {
+        this.clickNotesButton();
+    }
 }

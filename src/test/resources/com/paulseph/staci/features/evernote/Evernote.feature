@@ -99,3 +99,16 @@ Feature: Evernote Tests
     When I click the Empty Trash button and empty the trash
     Then there are no notes displayed
 
+  @e5 @e5b
+  Scenario: Create a note, delete it and restore it
+    Given I login with valid credentials
+    When I create a note with title 'Evernote 5 b' and body 'Test Body 1'
+    And I delete all notes
+    And I navigate to the trash can
+    And I restore the note with title 'Evernote 5 b'
+    And I navigate to the notes list
+    Then the note with title 'Evernote 5 b' and body 'Test Body 1' is displayed
+    And I delete all notes
+    And I navigate to the trash can
+    And I click the Empty Trash button and empty the trash
+

@@ -168,4 +168,14 @@ public class EvernoteSteps {
     public void thereAreNoNotesDisplayed() throws Throwable {
         assertTrue(this.evernotePage.getNoteList().size() == 0);
     }
+
+    @And("^I restore the note with title '(.*)'$")
+    public void iRestoreTheNoteWithTitle(String noteTitle) {
+        this.evernotePage.restoreTheNoteWithTitle(noteTitle);
+    }
+
+    @And("^I navigate to the notes list$")
+    public void iNavigateToTheNotesList()  {
+        this.evernotePage.navigateToTheNotesList();
+    }
 }
