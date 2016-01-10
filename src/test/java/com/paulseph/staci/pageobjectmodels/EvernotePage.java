@@ -138,6 +138,11 @@ public class EvernotePage {
         }
     }
 
+    private void clickConfirmationDialogConfirmButton() {
+        WebElement confirmButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-ConfirmationDialog-confirm"));
+        confirmButtonWebElement.click();
+    }
+
     public void deleteAllNotes() {
         this.clickNotesButton();
         this.waitForPageToLoad(1);
@@ -146,13 +151,13 @@ public class EvernotePage {
 
             this.clickWebElementWithActions(noteDeleteButtonWebElement);
 
-            WebElement confirmButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-ConfirmationDialog-confirm"));
-            confirmButtonWebElement.click();
+            clickConfirmationDialogConfirmButton();
 
             this.clickNotesButton();
             this.waitForPageToLoad(1);
         }
     }
+
 
     private void clickWebElementWithActions(WebElement noteDeleteButtonWebElement) {
         Actions action = new Actions(this.driver);
@@ -471,4 +476,111 @@ public class EvernotePage {
         return evernoteNoteList.contains(evernoteNote);
     }
 
+    private void clickNotebooksButton() {
+        WebElement notebooksButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-Sidebar-notebooksButton-container > div:nth-child(1) > div:nth-child(1) > img:nth-child(2)"));
+        this.clickWebElementWithJavascript(notebooksButtonWebElement);
+        this.waitForPageToLoad(3);
+    }
+
+    private void clickCreateNotebookButton() {
+        WebElement createNotebookButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-NotebooksDrawer-createNotebookButton"));
+        this.clickWebElementWithJavascript(createNotebookButtonWebElement);
+    }
+
+    private void clickCreateNotebookDialogConfirmButton() {
+        WebElement createNotebookDialogConfirmButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-CreateNotebookDialog-confirm"));
+        createNotebookDialogConfirmButtonWebElement.click();
+    }
+
+    public void createANotebookWithTitle(String title) {
+        this.clickNotebooksButton();
+        this.clickCreateNotebookButton();
+        this.driver.switchTo().activeElement().sendKeys(title);
+        this.clickCreateNotebookDialogConfirmButton();
+        this.waitForPageToLoad(3);
+    }
+
+    private WebElement getNotebookSelectMenuWebElement() {
+        return this.driver.findElement(By.cssSelector("#gwt-debug-NotebookSelectMenu-notebookName"));
+    }
+
+    private void clickNotebookSelectMenu() {
+        WebElement notebookSelectMenuWebElement = this.getNotebookSelectMenuWebElement();
+        this.clickWebElementWithJavascript(notebookSelectMenuWebElement);
+    }
+
+    public void moveTheNoteWithTitleToTheNotebookWithTitle(String noteTitle, String notebookTitle) {
+        this.clickNotesButton();
+
+        List<WebElement> noteTitleWebElementList = this.driver.findElements(
+                By.xpath(
+                        "//div[contains(@class, 'focus-NotesView-Note-noteTitle') and text() = '"
+                                + noteTitle
+                                + "']"));
+
+        for (WebElement noteTitleWebElement : noteTitleWebElementList) {
+            this.clickWebElementWithJavascript(noteTitleWebElement);
+
+            this.clickNotebookSelectMenu();
+
+            WebElement notebookChoiceWebElement = this.getNotebookSelectMenuWebElement().findElement(
+                    By.xpath("//*[text() = '" + notebookTitle + "']"));
+
+            this.clickWebElementWithJavascript(notebookChoiceWebElement);
+
+            this.waitForPageToLoad(2);
+        }
+    }
+
+    private void clickNotebookWithTitle(String notebookTitle) {
+//        WebElement notebookWithTitleWebElement
+//                = this.driver.findElement( By.xpath("//*[contains(@class, 'qa-name') and text() = '" + notebookTitle + "']/parent::*"));
+
+        WebElement notebookWithTitleWebElement
+                = this.driver.findElement( By.xpath("//*/div[contains(@class,'qa-notebookWidget')]/div/div[contains(@class, 'qa-name') and text() = '" + notebookTitle + "']/parent::*"));
+
+
+
+//        Actions action = new Actions(this.driver);
+//        action.moveToElement(notebookWithTitleWebElement).build().perform();
+//        action.click(notebookWithTitleWebElement).build().perform();
+
+        this.clickWebElementWithJavascript(notebookWithTitleWebElement);
+
+//        notebookWithTitleWebElement.click();
+
+        this.waitForPageToLoad(1);
+    }
+
+    private void openNotebookWithTitle(String notebookTitle) {
+        this.clickNotebooksButton();
+        this.clickNotebookWithTitle(notebookTitle);
+    }
+
+    public boolean theNoteWithTitleAndBodyExistsInTheNotebookWithTitle(String noteTitle, String noteBody, String notebookTitle) {
+        this.openNotebookWithTitle(notebookTitle);
+
+        this.waitForPageToLoad(10);
+
+        List<EvernoteNote> evernoteNoteList = this.getNoteList();
+
+        return evernoteNoteList.contains(new EvernoteNote(noteTitle, noteBody));
+    }
+
+
+    public void deleteNotebookWithTitle(String notebookTitle) {
+        this.clickNotebooksButton();
+
+        // Select delete button corresponding to notebook title
+        WebElement notebookWithTitleDeleteButtonWebElement
+                = this.driver.findElement(
+                    By.xpath("//div/div[contains(@class, 'qa-name') and text() = '"
+                            + notebookTitle
+                            + "']/following-sibling::*/following-sibling::*/div[contains(@class, 'qa-deleteButton')]"));
+
+        notebookWithTitleDeleteButtonWebElement.click();
+
+        this.clickConfirmationDialogConfirmButton();
+
+    }
 }

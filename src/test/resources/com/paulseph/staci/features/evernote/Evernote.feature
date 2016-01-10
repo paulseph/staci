@@ -74,3 +74,14 @@ Feature: Evernote Tests
     And I create a note with title 'Evernote 3 b 3' and body 'Test Body 3'
     When I search for 'Body 2'
     Then a note with title 'Evernote 3 b 2' and body 'Test Body 2' is shown
+
+  @e4
+  Scenario: Create a notebook and move note
+    Given I login with valid credentials
+    When I create a notebook with title 'Notebook Testing'
+    And I create a note with title 'Evernote 4' and body 'Test Body'
+    And I move the note with title 'Evernote 4' to the notebook with title 'Notebook Testing'
+    Then the note with title 'Evernote 4' and body 'Test Body' exists in the notebook with title 'Notebook Testing'
+    And the note with title 'Evernote 4' and body 'Test Body' does not exist in the notebook with title 'First Notebook'
+##    And I delete notebook with title 'Test Notebook'
+

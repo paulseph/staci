@@ -118,4 +118,29 @@ public class EvernoteSteps {
 
         this.evernotePage.deleteAllNotes();
     }
+
+    @When("^I create a notebook with title '(.*)'$")
+    public void iCreateANotebookWithTitle(String title) {
+        this.evernotePage.createANotebookWithTitle(title);
+    }
+
+    @And("^I move the note with title '(.*)' to the notebook with title '(.*)'$")
+    public void iMoveTheNoteWithTitleToTheNotebookWithTitle(String noteTitle, String notebookTitle) {
+        this.evernotePage.moveTheNoteWithTitleToTheNotebookWithTitle(noteTitle, notebookTitle);
+    }
+
+    @Then("^the note with title '(.*)' and body '(.*)' exists in the notebook with title '(.*)'$")
+    public void theNoteWithTitleAndBodyExistsInTheNotebookWithTitle(String noteTitle, String noteBody, String notebookTitle) {
+        assertTrue(this.evernotePage.theNoteWithTitleAndBodyExistsInTheNotebookWithTitle(noteTitle, noteBody, notebookTitle));
+    }
+
+    @And("^the note with title '(.*)' and body '(.*)' does not exist in the notebook with title '(.*)'$")
+    public void theNoteWithTitleAndBodyDoesNotExistInTheNotebookWithTitle(String noteTitle, String noteBody, String notebookTitle) {
+        assertFalse(this.evernotePage.theNoteWithTitleAndBodyExistsInTheNotebookWithTitle(noteTitle, noteBody, notebookTitle));
+    }
+
+    @And("^I delete notebook with title '(.*)'$")
+    public void iDeleteNotebookWithTitle(String notebookTitle) {
+        this.evernotePage.deleteNotebookWithTitle(notebookTitle);
+    }
 }
