@@ -617,4 +617,60 @@ public class EvernotePage {
     public void navigateToTheNotesList() {
         this.clickNotesButton();
     }
+
+    public void assignTheNoteWithTitleTheTag(String noteTitle, String tag) {
+        this.clickOnNoteWithTitle(noteTitle);
+
+        WebElement tagInputWebElement = this.driver.findElement(
+                By.xpath("//div[@id='gwt-debug-NoteTagsView-tagInputBox']/input"));
+
+        this.clickWebElementWithJavascript(tagInputWebElement);
+
+        this.driver.switchTo().activeElement().sendKeys(tag + "\n");
+
+        this.clickOnNoteWithTitle(noteTitle);
+
+    }
+
+    private void clickTagsButton() {
+        WebElement notesButtonWebElement = this.driver.findElement(By.cssSelector("#gwt-debug-Sidebar-tagsButton-container > div:nth-child(1) > div:nth-child(1) > img:nth-child(2)"));
+        this.clickWebElementWithJavascript(notesButtonWebElement);
+        this.waitForPageToLoad(1);
+    }
+
+    private void clickTagButton(String tag) {
+        WebElement tagButtonWebElement = this.driver.findElement(
+                By.xpath("//div[contains(@class, 'focus-drawer-TagsDrawer-TagSelectable-name') and text() = '"
+                + tag
+                + "']"));
+
+        tagButtonWebElement.click();
+        this.waitForPageToLoad(1);
+    }
+
+    private void clickTagDeleteButton(String tag) {
+        WebElement tagDeleteButtonWebElement = this.driver.findElement(
+                By.xpath("//div[contains(@class, 'focus-drawer-TagsDrawer-TagSelectable-name') and text() = '"
+                        + tag
+                        + "']/parent::*"
+                        + "/following-sibling::*"
+                        + "/div/div[contains(@class, 'focus-drawer-TagsDrawer-TagSelectable-delete-icon')]"
+                ));
+
+//        tagDeleteButtonWebElement = tagDeleteButtonWebElement.findElement(By.xpath("//div[contains(@class, 'focus-drawer-TagsDrawer-TagSelectable-delete-icon')]"));
+
+        this.clickWebElementWithJavascript(tagDeleteButtonWebElement);
+        this.waitForPageToLoad(1);
+    }
+
+    public void navigateToTag(String tag) {
+        this.clickTagsButton();
+        this.clickTagButton(tag);
+    }
+
+    public void deleteTag(String tag) {
+        this.clickTagsButton();
+        this.clickTagDeleteButton(tag);
+        this.clickConfirmationDialogConfirmButton();
+    }
 }

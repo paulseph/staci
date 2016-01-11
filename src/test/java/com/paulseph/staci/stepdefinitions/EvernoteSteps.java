@@ -44,12 +44,12 @@ public class EvernoteSteps {
     }
 
     @Given("^I login with valid credentials$")
-    public void iLoginWithValidCredentials() throws Throwable {
+    public void iLoginWithValidCredentials() {
         this.evernotePage.loginWithValidCredentials();
     }
 
     @When("^I create a note with title '(.*)' and body '(.*)'$")
-    public void iCreateANoteWithTitleAndBody(String title, String body) throws Throwable {
+    public void iCreateANoteWithTitleAndBody(String title, String body) {
         this.evernotePage.createANoteWithTitleAndBody(title, body);
     }
 
@@ -60,7 +60,7 @@ public class EvernoteSteps {
     }
 
     @And("^I logout$")
-    public void iLogout() throws Throwable {
+    public void iLogout() {
         this.evernotePage.logout();
     }
 
@@ -81,7 +81,7 @@ public class EvernoteSteps {
     }
 
     @Then("^a note with title '(.*)' and a table with (\\d+) rows and (\\d+) columns is created$")
-    public void aNoteWithTitleAndATableWithRowsAndColumnsIsCreated(String title, int rows, int columns) throws Throwable {
+    public void aNoteWithTitleAndATableWithRowsAndColumnsIsCreated(String title, int rows, int columns) {
         assertTrue(this.evernotePage.aNoteWithTitleAndATableWithRowsAndColumnsIsCreated(title, rows, columns));
 
         this.evernotePage.deleteAllNotes();
@@ -164,9 +164,9 @@ public class EvernoteSteps {
         this.evernotePage.clickTheEmptyTrashButtonAndEmptyTheTrash();
     }
 
-    @Then("^there are no notes displayed$")
-    public void thereAreNoNotesDisplayed() throws Throwable {
-        assertTrue(this.evernotePage.getNoteList().size() == 0);
+    @Then("^there are (\\d+) notes displayed$")
+    public void thereAreNotesDisplayed(int num) {
+        assertTrue(this.evernotePage.getNoteList().size() == num);
     }
 
     @And("^I restore the note with title '(.*)'$")
@@ -177,5 +177,20 @@ public class EvernoteSteps {
     @And("^I navigate to the notes list$")
     public void iNavigateToTheNotesList()  {
         this.evernotePage.navigateToTheNotesList();
+    }
+
+    @And("^I assign the note with title '(.*)' the tag '(.*)'$")
+    public void iAssignTheNoteWithTitleTheTag(String noteTitle, String tag) {
+        this.evernotePage.assignTheNoteWithTitleTheTag(noteTitle, tag);
+    }
+
+    @And("^I navigate to tag '(.*)'$")
+    public void iNavigateToTag(String tag) {
+        this.evernotePage.navigateToTag(tag);
+    }
+
+    @Then("^I delete tag '(.*)'$")
+    public void iDeleteTag(String tag) {
+        this.evernotePage.deleteTag(tag);
     }
 }

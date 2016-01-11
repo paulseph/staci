@@ -97,7 +97,7 @@ Feature: Evernote Tests
     And the note with title 'Evernote 5 a 2' and body 'Test Body 2' is displayed
     And the note with title 'Evernote 5 a 3' and body 'Test Body 3' is displayed
     When I click the Empty Trash button and empty the trash
-    Then there are no notes displayed
+    Then there are 0 notes displayed
 
   @e5 @e5b
   Scenario: Create a note, delete it and restore it
@@ -108,6 +108,23 @@ Feature: Evernote Tests
     And I restore the note with title 'Evernote 5 b'
     And I navigate to the notes list
     Then the note with title 'Evernote 5 b' and body 'Test Body 1' is displayed
+    And I delete all notes
+    And I navigate to the trash can
+    And I click the Empty Trash button and empty the trash
+
+  @e6
+  Scenario: Create notes and assign tags
+    Given I login with valid credentials
+    When I create a note with title 'Evernote 6 1' and body 'Test Body 1'
+    And I create a note with title 'Evernote 6 2' and body 'Test Body 2'
+    And I create a note with title 'Evernote 6 3' and body 'Test Body 3'
+    And I assign the note with title 'Evernote 6 1' the tag 'Test Tag'
+    And I assign the note with title 'Evernote 6 2' the tag 'Test Tag'
+    And I navigate to tag 'Test Tag'
+    Then the note with title 'Evernote 6 1' and body 'Test Body 1' is displayed
+    And the note with title 'Evernote 6 2' and body 'Test Body 2' is displayed
+    And there are 2 notes displayed
+    Then I delete tag 'Test Tag'
     And I delete all notes
     And I navigate to the trash can
     And I click the Empty Trash button and empty the trash
