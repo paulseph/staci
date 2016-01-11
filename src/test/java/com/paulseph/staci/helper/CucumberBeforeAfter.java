@@ -1,5 +1,6 @@
 package com.paulseph.staci.helper;
 
+import com.paulseph.staci.driver.AndroidContactsDriver;
 import com.paulseph.staci.pageobjectmodels.EvernotePage;
 import com.paulseph.staci.stepdefinitions.EvernoteSteps;
 import cucumber.api.Scenario;
@@ -18,10 +19,9 @@ import java.util.Calendar;
 
 public class CucumberBeforeAfter {
     private static boolean imagesCleaned = false;
-    private static boolean studentPopulationExecuted = false;
 
     // This ensures that this @Before is always executed first
-    @Before(order = 0)
+    @Before(order = 0, value = "~@androidContacts")
     public void setup() {
         // Delete all screen shots from previous execution
         // THIS SHOULD BE EXECUTED ONLY ONCE
@@ -40,8 +40,13 @@ public class CucumberBeforeAfter {
         Driver.startWebDriver();
     }
 
+    @Before(value = "@androidContacts")
+    public void setupAndroid() {
+        AndroidContactsDriver.startWebDriver();
+    }
+
     // This ensures that this @After is always executed last
-    @After(order = 0)
+    @After(order = 0, value = "~@androidContacts")
     public void tearDown(Scenario scenario) {
         // If Cucumber scenario fails, output time of failure and take screen shot
         if (scenario.isFailed()) {
@@ -50,12 +55,19 @@ public class CucumberBeforeAfter {
             DriverScreenShotHelper.takeScreenShot(scenario);
         }
 
-//        EvernoteSteps.deleteAllNotesIfLoggedIn();
-
         if (Driver.getWebDriver() != null) {
             Driver.getWebDriver().quit();
             Driver.nullWebDriver();
         }
+
     }
+
+    @After(value = "@androidContacts")
+    public void shutdownAndroid() {
+        AndroidContactsDriver.shutdownWebDriver();
+    }
+
+
+
 
 }
