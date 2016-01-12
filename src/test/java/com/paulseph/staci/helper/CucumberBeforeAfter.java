@@ -66,9 +66,14 @@ public class CucumberBeforeAfter {
     @After(value = "@androidContacts")
     public void shutdownAndroid() {
 
+
+        AndroidContactsDriver.shutdownWebDriver();
+
+        // Exit and re-enter application to make sure we start at the contacts page
+
+        AndroidContactsDriver.startWebDriver();
         AndroidContactsPage androidContactsPage = new AndroidContactsPage();
         androidContactsPage.deleteAllContacts();
-
         AndroidContactsDriver.shutdownWebDriver();
     }
 

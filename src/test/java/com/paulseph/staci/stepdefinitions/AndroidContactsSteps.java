@@ -73,4 +73,14 @@ public class AndroidContactsSteps {
     public void iDeleteAllContacts() {
         this.androidContactsPage.deleteAllContacts();
     }
+
+    @When("^I open the contact with name '(.*)'$")
+    public void iOpenTheContactWithName(String name) {
+        this.androidContactsPage.openTheContactWithName(name);
+    }
+
+    @And("^I click the edit contact button$")
+    public void iClickTheEditContactButton() {
+        this.androidContactsPage.clickTheEditContactButton();
+    }
 }

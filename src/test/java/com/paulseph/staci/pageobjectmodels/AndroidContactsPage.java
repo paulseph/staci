@@ -53,7 +53,8 @@ public class AndroidContactsPage {
     }
 
     private WebElement getNameWebElement() {
-        return this.driver.findElement(By.xpath("//*[contains(@class, 'android.widget.EditText') and contains(@text, 'Name')]"));
+//        return this.driver.findElement(By.xpath("//*[contains(@class, 'android.widget.EditText') and contains(@text, 'Name')]"));
+        return this.getEditTextWebElementList().get(0);
     }
 
     private WebElement getMobileNumberWebElement() {
@@ -126,10 +127,13 @@ public class AndroidContactsPage {
                         "contains(@text, '" + emailAddress + "')]")).size() > 0;
     }
 
-    // Assumes only one contact is displayed
+
     public boolean aContactWithNameIsShownInContactsList(String name) {
-        return this.driver.findElement(
-                By.id("com.android.contacts:id/cliv_name_textview")).getText().equals(name);
+        return this.driver.findElements(
+                By.xpath("//*[contains(@class, 'android.widget.TextView') and "
+                        + "contains(@text, '"
+                        + name
+                        + "')]")).size() > 0;
     }
 
     private WebElement getFirstContactShownEntryWebElement() {
@@ -173,4 +177,16 @@ public class AndroidContactsPage {
         }
     }
 
+    public void openTheContactWithName(String name) {
+        WebElement contactWebElement = this.driver.findElement(
+                By.xpath("//*[contains(@class, 'android.widget.TextView') and contains(@text, '"
+                + name
+                + "')]"));
+
+        contactWebElement.click();
+    }
+
+    public void clickTheEditContactButton() {
+        this.getContactEditButtonWebElement().click();
+    }
 }
