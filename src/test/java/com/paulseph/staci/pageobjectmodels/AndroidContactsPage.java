@@ -172,6 +172,7 @@ public class AndroidContactsPage {
     }
 
     public void deleteAllContacts() {
+        this.clickOnAllContactsButton();
         while (this.contactsAreShown()) {
             this.deleteFirstContactShown();
         }
@@ -188,5 +189,34 @@ public class AndroidContactsPage {
 
     public void clickTheEditContactButton() {
         this.getContactEditButtonWebElement().click();
+    }
+
+    public void clickOnAllContactsButton() {
+        WebElement favouritesButtonWebElement = this.driver.findElement(
+                By.xpath("//*[contains(@class, 'android.widget.TextView') and contains(@text, 'All contacts')]"));
+
+        favouritesButtonWebElement.click();
+    }
+
+    public void clickOnFavouritesButton() {
+        WebElement favouritesButtonWebElement = this.driver.findElement(
+                By.xpath("//*[contains(@class, 'android.widget.TextView') and contains(@text, 'Favorites')]"));
+
+        favouritesButtonWebElement.click();
+    }
+
+    public boolean thereAreNoContactsShownInTheFavouritesList() {
+        return this.driver.findElements(
+                By.xpath("//*[contains(@class, 'android.widget.TextView') and "
+                        + "contains(@text, 'No favorites.')]")).size() > 0;
+    }
+
+    private WebElement getContactFavouriteButtonWebElement() {
+        return this.driver.findElement(
+                By.id("com.android.contacts:id/menu_star"));
+    }
+
+    public void iMarkTheContactAsFavourite() {
+        this.getContactFavouriteButtonWebElement().click();
     }
 }

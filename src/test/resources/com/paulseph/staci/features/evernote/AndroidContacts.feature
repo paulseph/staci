@@ -32,5 +32,18 @@ Feature: Android Contacts Tests
     Then the contact page shows the name 'Changed Contact'
     And the contact page shows the mobile number 35679999999
 
+  @ac3
+  Scenario: Favourite contact
+    Given I click on Favourites button
+    Then there are no contacts shown in the favourites list
+    When I click on Create A New Contact button
+    And I input the name 'Favourite Contact'
+    And I input the mobile number 35679555555
+    And I navigate back
+    And I mark the contact as favourite
+    And I navigate back
+    And I click on Favourites button
+    Then a contact with name 'Favourite Contact' is shown in contacts list
+
 
 

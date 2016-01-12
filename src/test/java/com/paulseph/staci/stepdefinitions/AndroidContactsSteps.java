@@ -83,4 +83,21 @@ public class AndroidContactsSteps {
     public void iClickTheEditContactButton() {
         this.androidContactsPage.clickTheEditContactButton();
     }
+
+    @Given("^I click on Favourites button$")
+    public void iClickOnFavouritesButton() {
+        this.androidContactsPage.clickOnFavouritesButton();
+    }
+
+
+    @Then("^there are no contacts shown in the favourites list$")
+    public void thereAreNoContactsShownInTheFavouritesList() {
+        assertTrue(this.androidContactsPage.thereAreNoContactsShownInTheFavouritesList());
+    }
+
+    @And("^I mark the contact as favourite$")
+    public void iMarkTheContactAsFavourite() {
+        this.androidContactsPage.iMarkTheContactAsFavourite();
+    }
+
 }
