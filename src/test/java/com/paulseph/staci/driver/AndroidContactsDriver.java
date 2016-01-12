@@ -41,7 +41,7 @@ public class AndroidContactsDriver {
             desiredCapabilities.setCapability("appActivity", ".DialtactsContactsEntryActivity");
 
 //        desiredCapabilities.setCapability("automationName", "Appium");
-//        desiredCapabilities.setCapability("newCommandTimeout", "30");
+        desiredCapabilities.setCapability("newCommandTimeout", "30");
 //        desiredCapabilities.setCapability("platformName", "Android");
 //        desiredCapabilities.setCapability("platformVersion", "5.1");
 //        desiredCapabilities.setCapability("deviceReadyTimeout", "30");
@@ -64,19 +64,5 @@ public class AndroidContactsDriver {
             driver = null;
         }
     }
-
-
-//    @AfterClass
-//    public static void tearDownClass() {
-//        if (driver != null) {
-//            driver.quit();
-//        }
-//    }
-//
-//    @Test
-//    public void test() throws IOException {
-//        WebElement button = driver.findElement(By.name("Accessibility"));
-//        button.click();
-//    }
 
 }

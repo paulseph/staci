@@ -128,7 +128,7 @@ public class EvernotePage {
         this.clickWebElementWithJavascript(noteDoneButtonWebElement);
     }
 
-    private void waitForPageToLoad(int seconds) {
+    void waitForPageToLoad(int seconds) {
         // A primitive way to ensure that all dynamic content has loaded by simply adding a wait.
         // This should ideally be replaced with better logic.
         try {

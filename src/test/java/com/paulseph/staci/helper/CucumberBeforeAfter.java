@@ -1,6 +1,7 @@
 package com.paulseph.staci.helper;
 
 import com.paulseph.staci.driver.AndroidContactsDriver;
+import com.paulseph.staci.pageobjectmodels.AndroidContactsPage;
 import com.paulseph.staci.pageobjectmodels.EvernotePage;
 import com.paulseph.staci.stepdefinitions.EvernoteSteps;
 import cucumber.api.Scenario;
@@ -64,6 +65,10 @@ public class CucumberBeforeAfter {
 
     @After(value = "@androidContacts")
     public void shutdownAndroid() {
+
+        AndroidContactsPage androidContactsPage = new AndroidContactsPage();
+        androidContactsPage.deleteAllContacts();
+
         AndroidContactsDriver.shutdownWebDriver();
     }
 

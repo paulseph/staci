@@ -19,4 +19,58 @@ public class AndroidContactsSteps {
         this.androidContactsPage.clickOnCreateANewContactButton();
     }
 
+    @When("^I input the name '(.*)'$")
+    public void iInputTheName(String name) {
+        this.androidContactsPage.inputTheName(name);
+    }
+
+    @And("^I input the mobile number (\\d+)$")
+    public void iInputTheMobileNumber(String mobileNumber) {
+        this.androidContactsPage.inputTheMobileNumber(mobileNumber);
+    }
+
+    @And("^I input the home number (\\d+)$")
+    public void iInputTheHomeNumber(String homeNumber) {
+        this.androidContactsPage.inputTheHomeNumber(homeNumber);
+    }
+
+    @And("^I input the email address '(.*)'$")
+    public void iInputTheEmailAddress(String emailAddress) {
+        this.androidContactsPage.inputTheEmailAddress(emailAddress);
+    }
+
+    @And("^I navigate back$")
+    public void iNavigateBack() {
+        this.androidContactsPage.navigateBack();
+    }
+
+    @Then("^the contact page shows the name '(.*)'$")
+    public void theContactPagesShowTheName(String name) {
+        assertTrue(this.androidContactsPage.contactPageShowsTheName(name));
+    }
+
+    @And("^the contact page shows the mobile number (\\d+)$")
+    public void theContactPageShowsTheMobileNumber(String mobileNumber) {
+        assertTrue(this.androidContactsPage.contactPageShowsTheMobileNumber(mobileNumber));
+    }
+
+    @And("^the contact page shows the home number (\\d+)$")
+    public void theContactPageShowsTheHomeNumber(String homeNumber) {
+        assertTrue(this.androidContactsPage.contactPageShowsTheHomeNumber(homeNumber));
+    }
+
+    @And("^the contact page shows the email address '(.*)'$")
+    public void theContactPageShowsTheEmailAddress(String emailAddress) {
+        assertTrue(this.androidContactsPage.contactPageShowsTheEmailAddress(emailAddress));
+    }
+
+    @Then("^a contact with name '(.*)' is shown in contacts list$")
+    public void aContactWithNameIsShownInContactsList(String name) {
+        assertTrue(this.androidContactsPage.aContactWithNameIsShownInContactsList(name));
+    }
+
+    @And("^I delete all contacts$")
+    public void iDeleteAllContacts() {
+        this.androidContactsPage.deleteAllContacts();
+    }
 }
